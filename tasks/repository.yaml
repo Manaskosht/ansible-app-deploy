@@ -1,0 +1,16 @@
+---
+- name: Clone or update course-store repo
+  ansible.builtin.git:
+    repo: "{{ app_repo }}"
+    dest: "{{ app_directory }}"
+    version: "{{ app_branch }}"
+    update: true
+    force: true
+  register: repository_result
+
+- name: Display Repository Deployment Result
+  ansible.builtin.debug:
+    msg:
+      - "Repository: {{ app_name }}"
+      - "Host: {{ inventory_hostname }}"
+      - "Changed: {{ repository_result.changed }}"

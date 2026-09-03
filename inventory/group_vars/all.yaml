@@ -1,0 +1,14 @@
+---
+app_name: course_app
+
+app_repo: https://github.com/Manaskosht/curse-store.git
+
+app_branch: "main"
+
+app_directory: "/opt/course-store"
+
+app_port: 5000
+
+app_health_url: "http://localhost:{{ app_port }}"
+
+app_public_url: "http://{{ ansible_host }}:{{ app_port }}"
