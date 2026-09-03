@@ -1,1 +1,28 @@
-p
+---
+- name: Wait for application port  to beccome available
+  ansible.builtin.wait_for:
+    host: "127.0.0.1"
+    port: "{{ app_port }}"
+    state: started
+    delay: 5
+    timeout: 60
+
+- name: Check application HTTP response
+  ansible.builtin.uri:
+    url: "{{ app_health_url }}"
+    method: GET
+    status_code: 200
+    return_content: false
+  register: health_check
+
+- name: Get Docker Compose container status
+  ansible.builtin.debug:
+    var: docker_compose_status.stdout_lines
+
+- name: Display Deployment Verification Result
+  ansible.builtin.debug:
+    msg:
+      - "Application: {{ app_name }}"
+      - "Host: {{ inventory_hostname }}"
+      - "HTTP Status: {{ health_check.status }}"
+      - "Application URL: {{ app_public_url }}"

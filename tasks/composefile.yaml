@@ -1,0 +1,21 @@
+---
+- name: Check Docker Compose file exists
+  ansible.builtin.stat:
+    path: "{{ app_directory }}/compose.yml"
+  register: compose_file
+
+- name: Fail if Docker compose file not exists
+  ansible.builtin.fail:
+    msg: "compose.yml was not found in {{ app_directory }}"
+  when: not compose_file.stat.exists
+
+- name: Build and start course Store containers
+  ansible.builtin.command:
+    cmd: docker compose up -d --build
+    chdir: "{{app_directory}}"
+  register: compose_deployment
+  changed_when: compose_deployment.rc==0
+
+- name: Display Docker Compose Deployment output
+  ansible.builtin.debug:
+    var: compose_deployment.stdout_lines

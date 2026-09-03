@@ -10,4 +10,10 @@
 
     - name: Deploy course-store Repository
       ansible.builtin.include_tasks: ../tasks/repository.yaml
+
+    - name: Deploy Application using Docker Compose
+      ansible.builtin.import_tasks: ../tasks/composefile.yaml
+
+    - name: Verify Application Deployment
+      ansible.builtin.import_tasks: ../tasks/verify.yaml
        
